@@ -7,7 +7,11 @@ int main() {
 
     int vals[] = { 10, 20, 30, 40, 50, 25 };
     for (int v : vals) t.insert(v);
-  t.exportDot("avl.dot");
+    std::cout << "ABOUT TO EXPORT DOT\n";
+t.exportDot("avl.dot");
+std::cout << "DONE EXPORT DOT\n";
+
+ 
 
 
     std::cout << "Search 25: " << (t.search(25) ? "true" : "false") << "\n";
