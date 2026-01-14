@@ -1,0 +1,11 @@
+﻿# Build artifacts
+build/
+
+# Visual Studio
+.vs/
+*.vcxproj*
+*.sln
+
+# OS files
+.DS_Store
+Thumbs.db
