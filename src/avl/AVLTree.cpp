@@ -1,6 +1,8 @@
 #include "avl/AVLTree.hpp"
 #include <algorithm>
 #include <limits>
+#include <fstream>
+
 
 AVLTree::AVLTree() : root_(nullptr) {}
 
@@ -196,3 +198,67 @@ bool AVLTree::isValidAVL() const {
     int h = 0;
     return isAVLHeightConsistent(root_, h);
 }
+
+
+void AVLTree::exportDot(const std::string& filename) const {
+    std::ofstream out(filename);
+    if (!out) return;
+
+    out << "digraph AVL {\n";
+    out << "  node [shape=circle];\n";
+
+    if (!root_) {
+        out << "  empty [label=\"(empty)\"];\n";
+        out << "}\n";
+        return;
+    }
+
+    exportDotRec(root_, out);
+    out << "}\n";
+}
+
+void AVLTree::exportDotRec(const AVLNode* node, std::ostream& out) {
+    if (!node) return;
+
+    out << "  n" << node << " [label=\""
+        << node->key << "\\n(h=" << node->height << ")\"];\n";
+
+    if (node->left) {
+        out << "  n" << node << " -> n" << node->left << " [label=\"L\"];\n";
+        exportDotRec(node->left, out);
+    } else {
+        exportNullChildren(node, out);
+    }
+
+    if (node->right) {
+        out << "  n" << node << " -> n" << node->right << " [label=\"R\"];\n";
+        exportDotRec(node->right, out);
+    } else {
+        exportNullChildren(node, out);
+    }
+}
+
+void AVLTree::exportNullChildren(const AVLNode* node, std::ostream& out) {
+    if (!node->left) {
+        out << "  nullL" << node << " [shape=point];\n";
+        out << "  n" << node << " -> nullL" << node << " [label=\"L\"];\n";
+    }
+    if (!node->right) {
+        out << "  nullR" << node << " [shape=point];\n";
+        out << "  n" << node << " -> nullR" << node << " [label=\"R\"];\n";
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
