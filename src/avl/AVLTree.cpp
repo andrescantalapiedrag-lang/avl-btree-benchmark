@@ -2,6 +2,10 @@
 #include <algorithm>
 #include <limits>
 #include <fstream>
+#include <fstream>
+#include <iostream>
+#include <functional>
+
 
 
 AVLTree::AVLTree() : root_(nullptr) {}
@@ -202,7 +206,14 @@ bool AVLTree::isValidAVL() const {
 
 void AVLTree::exportDot(const std::string& filename) const {
     std::ofstream out(filename);
-    if (!out) return;
+
+    if (!out.is_open()) {
+        std::cerr << "ERROR: Cannot open file for writing: "
+                  << filename << std::endl;
+        return;
+    }
+
+    std::cout << "Writing DOT file to: " << filename << std::endl;
 
     out << "digraph AVL {\n";
     out << "  node [shape=circle];\n";
@@ -213,9 +224,30 @@ void AVLTree::exportDot(const std::string& filename) const {
         return;
     }
 
-    exportDotRec(root_, out);
+    std::function<void(const AVLNode*)> dfs =
+        [&](const AVLNode* n) {
+            if (!n) return;
+
+            out << "  n" << n
+                << " [label=\"" << n->key << "\"];\n";
+
+            if (n->left) {
+                out << "  n" << n << " -> n" << n->left << ";\n";
+                dfs(n->left);
+            }
+
+            if (n->right) {
+                out << "  n" << n << " -> n" << n->right << ";\n";
+                dfs(n->right);
+            }
+        };
+
+    dfs(root_);
     out << "}\n";
+
+    out.close();
 }
+
 
 void AVLTree::exportDotRec(const AVLNode* node, std::ostream& out) {
     if (!node) return;
