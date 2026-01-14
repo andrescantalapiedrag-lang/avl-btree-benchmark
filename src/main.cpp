@@ -7,7 +7,7 @@ int main() {
 
     int vals[] = { 10, 20, 30, 40, 50, 25 };
     for (int v : vals) t.insert(v);
-   t.exportDot("C:\\Users\\Andrés\\Downloads\\avl_btree_benchmark\\avl.dot");
+  t.exportDot("avl.dot");
 
 
     std::cout << "Search 25: " << (t.search(25) ? "true" : "false") << "\n";
