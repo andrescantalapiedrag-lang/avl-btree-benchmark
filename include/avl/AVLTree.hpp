@@ -12,6 +12,8 @@ public:
 
     AVLTree(const AVLTree&) = delete;
     AVLTree& operator=(const AVLTree&) = delete;
+    void exportDot(const std::string& filename) const;
+
 
     void insert(int key);
     void remove(int key);
@@ -27,6 +29,10 @@ private:
     static int height(const AVLNode* n);
     static int balanceFactor(const AVLNode* n);
     static void updateHeight(AVLNode* n);
+
+    static void exportDotRec(const AVLNode* node, std::ostream& out);
+    static void exportNullChildren(const AVLNode* node, std::ostream& out);
+
 
     static AVLNode* rotateRight(AVLNode* y);
     static AVLNode* rotateLeft(AVLNode* x);
