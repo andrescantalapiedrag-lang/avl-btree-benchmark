@@ -1,5 +1,8 @@
 #pragma once
 #include "avl/AVLNode.hpp"
+#include <string>
+#include <ostream>
+
 
 
 class AVLTree {
