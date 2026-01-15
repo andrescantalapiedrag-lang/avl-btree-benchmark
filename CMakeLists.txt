@@ -7,7 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(avl_btree_benchmark
     src/main.cpp
     src/avl/AVLTree.cpp
+    src/btree/BTree.cpp
 )
+
 
 target_include_directories(avl_btree_benchmark PRIVATE include)
 

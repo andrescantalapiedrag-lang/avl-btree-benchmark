@@ -1,6 +1,10 @@
 #include "avl/AVLTree.hpp"
 #include <algorithm>
 #include <limits>
+#include <fstream>
+#include <iostream>
+#include <functional>
+
 
 AVLTree::AVLTree() : root_(nullptr) {}
 
@@ -195,4 +199,44 @@ bool AVLTree::isValidAVL() const {
     }
     int h = 0;
     return isAVLHeightConsistent(root_, h);
+}
+
+void AVLTree::exportDot(const std::string& filename) const {
+    std::ofstream out(filename);
+
+    if (!out.is_open()) {
+        std::cerr << "ERROR: Cannot open file for writing: "
+            << filename << std::endl;
+        return;
+    }
+
+    std::cout << "Writing DOT file to: " << filename << std::endl;
+
+    out << "digraph AVL {\n";
+    out << "  node [shape=circle];\n";
+
+    if (!root_) {
+        out << "  empty [label=\"(empty)\"];\n";
+        out << "}\n";
+        return;
+    }
+
+    std::function<void(const AVLNode*)> dfs = [&](const AVLNode* n) {
+        if (!n) return;
+
+        out << "  n" << n << " [label=\"" << n->key << "\"];\n";
+
+        if (n->left) {
+            out << "  n" << n << " -> n" << n->left << ";\n";
+            dfs(n->left);
+        }
+        if (n->right) {
+            out << "  n" << n << " -> n" << n->right << ";\n";
+            dfs(n->right);
+        }
+        };
+
+    dfs(root_);
+    out << "}\n";
+    out.close();
 }

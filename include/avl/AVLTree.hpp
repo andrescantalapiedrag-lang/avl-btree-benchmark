@@ -1,5 +1,6 @@
 #pragma once
 #include "avl/AVLNode.hpp"
+#include <string>
 
 
 class AVLTree {
@@ -13,6 +14,8 @@ public:
     void insert(int key);
     void remove(int key);
     bool search(int key) const;
+    void exportDot(const std::string& filename) const;
+
 
     // Optional helper for debugging / correctness
     bool isValidAVL() const;
